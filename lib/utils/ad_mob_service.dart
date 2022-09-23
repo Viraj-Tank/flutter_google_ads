@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 class AdMobService {
   static String? get bannerAdId {
     if (Platform.isAndroid) {
@@ -27,4 +30,13 @@ class AdMobService {
     }
     return null;
   }
+
+  static final BannerAdListener bannerAdListener = BannerAdListener(
+    onAdLoaded: (ad) => debugPrint('Ad loaded'),
+    onAdFailedToLoad: (ad, error) {
+      debugPrint('Ad failed to load');
+    },
+    onAdOpened: (ad) => debugPrint('Ad opened'),
+    onAdClosed: (ad) => debugPrint('Ad closed'),
+  );
 }
