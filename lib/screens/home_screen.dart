@@ -11,12 +11,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   BannerAd? _bannerAd;
+  InterstitialAd? _interstitialAd;
 
   @override
   void initState() {
     super.initState();
 
     _createBannerAd();
+    _createInterstitialAd();
   }
 
   @override
@@ -42,5 +44,35 @@ class _HomePageState extends State<HomePage> {
         listener: AdMobService.bannerAdListener,
         request: const AdRequest())
       ..load();
+  }
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdMobService.interstitialAdId!,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) => _interstitialAd = ad,
+        onAdFailedToLoad: (error) {
+          _interstitialAd = null;
+        },
+      ),
+    );
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (ad) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          _createInterstitialAd();
+        },
+      );
+    }
+    _interstitialAd!.show();
+    _interstitialAd = null;
   }
 }
