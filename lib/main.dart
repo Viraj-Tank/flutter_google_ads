@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_google_ads/screens/home_screen.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() {
@@ -12,9 +13,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      home: Container(),
+      home: HomePage(),
     );
   }
 }
